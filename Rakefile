@@ -9,17 +9,17 @@ end
 
 task :default => :test
 
-namespace :shield do
-  task :install do
-    require 'rack/attack/shield'
-    if defined?(Rails)
-      file = Rails.root.join('app', 'views', 'layouts', 'shield.html')
+namespace :rack do
+  namespace :shield do
+    task :install do
+      require 'rack/shield'
+      file = defined?(Rails) ? Rails.root.join('app', 'views', 'layouts', 'shield.html') : 'shield.html'
       if file.exist?
         puts "skipping #{file}"
       else
-        file.write(File)
-    else
-      
+        file.write(Rack::Shield::Response.default_template.read)
+        puts "create #{file}"
+      end
     end
   end
 end

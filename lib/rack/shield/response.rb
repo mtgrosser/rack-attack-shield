@@ -4,14 +4,18 @@ module Rack
       attr_reader :env
       
       class << self
-        attr_writer :template_path
+        attr_writer :template
         
-        def template_path
-          @template_path ||= if defined?(Rails)
+        def template
+          @template ||= if defined?(Rails)
             Rails.root.join('app', 'views', 'layouts', 'shield.html')
           else
-            Pathname.new(__FILE__).dirname.join('..', '..', '..', '..', 'templates', 'shield.html')
+            default_template
           end
+        end
+        
+        def default_template
+          Pathname.new(__FILE__).dirname.join('..', '..', '..', '..', 'templates', 'shield.html')
         end
         
         def call(env)
@@ -24,9 +28,7 @@ module Rack
       end
       
       def render
-        html = template_path.read
-        html = html.gsub('%REQUEST_IP%', env['action_dispatch.remote_ip'].to_s)
-        html = html.gsub('%EMAIL%', 'info@example.com') # TODO
+        html = self.class.template.read.gsub('%REQUEST_IP%', env['REMOTE_ADDR'].to_s)
         [403, { 'Content-Type' => 'text/html' }, ["#{html}\n"]]
       end
     end
