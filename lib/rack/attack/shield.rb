@@ -1,6 +1,7 @@
 require 'pathname'
 require 'rack/attack'
 require_relative 'shield/version'
+require_relative 'shield/response'
 
 module Rack
   module Attack
@@ -23,7 +24,7 @@ module Rack
 
       class << self
 
-        attr_accessor :evil_paths, :evil_queries
+        attr_accessor :evil_paths, :evil_queries, :response
     
         def evil?(req)
           evil_paths.any? { |matcher| match?(req.path, matcher) } || 
@@ -44,8 +45,9 @@ module Rack
         end
       end
 
-      self.evil_paths = DEFAULT_EVIL_PATHS.dup
+      self.evil_paths   = DEFAULT_EVIL_PATHS.dup
       self.evil_queries = DEFAULT_EVIL_QUERIES.dup
+      self.response     = Response
       
     end
   end
