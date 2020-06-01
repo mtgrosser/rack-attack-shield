@@ -1,35 +1,64 @@
-# Rack::Attack::Shield
+![Shield](https://raw.githubusercontent.com/mtgrosser/rack-shield/master/doc/shield.svg)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rack/attack/shield`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Rack::Shield
 
-TODO: Delete this and the text above, and describe your gem
+Simple frontend to block and unblock evil requests with `Rack::Attack`
 
 ## Installation
 
-Add this line to your application's Gemfile:
+In your Gemfile:
 
 ```ruby
 gem 'rack-attack-shield'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rack-attack-shield
-
 ## Usage
 
-TODO: Write usage instructions here
+Check whether request is evil:
 
-## Development
+```ruby
+Rack::Shield.evil?(request)
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+With `Rack::Attack::Fail2Ban`:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+# After 3 blocked requests in 10 minutes, block all requests from that IP for 5 minutes.
+Rack::Attack.blocklist('fail2ban pentesters') do |req|
+  # `filter` returns truthy value if request fails, or if it's from a previously banned IP
+  # so the request is blocked
+  Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 5.minutes) do
+    Rack::Shield.evil?(req)
+  end
+end
+```
 
-## Contributing
+## Configuration
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rack-attack-shield.
+Adding to path matchers:
+
+```ruby
+# Regexp will be matched
+Rack::Shield.evil_paths << /\.sql\z/
+
+# String will be checked for inclusion
+Rack::Shield.evil_paths << '/wp-admin'
+```
+Defaults are defined in `Rack::Shield::DEFAULT_EVIL_PATHS.
+
+## Blocked response
+
+By default, the blocked response is generated automatically:
+
+```ruby
+# default
+Rack::Shield.response = Rack::Shield::Response
+```
+
+It can be set to any `call`able object which conforms to the `Rack` interface:
+
+```ruby
+Rack::Shield.response = ->(env) { [403, { 'Content-Type' => 'text/html' }, ["Blocked!\n"]]
+```
+
+In Rails apps, the blocked response will be generated from `app/views/layouts/shield.html`.
