@@ -42,7 +42,7 @@ Rack::Shield.evil_paths << /\.sql\z/
 # String will be checked for inclusion
 Rack::Shield.evil_paths << '/wp-admin'
 ```
-Defaults are defined in `Rack::Shield::DEFAULT_EVIL_PATHS.
+Defaults are defined in `Rack::Shield::DEFAULT_EVIL_PATHS`.
 
 ## Blocked response
 
