@@ -5,12 +5,19 @@ require_relative 'shield/response'
 
 module Rack
   module Shield
-    DEFAULT_EVIL_PATHS = [/wp-(includes|content|admin)/,
-                          /\.php\z/,
+    DEFAULT_EVIL_PATHS = [/\/wp-(includes|content|admin)/,
+                          /\.(php|cgi|asp|aspx|shtml|log|sql|cfm|py|lasso|pl|jsp|do|action|sh)\z/i,
                           'cgi-bin',
                           'phpmyadmin',
                           'etc/passwd',
-                          /\/\.env\z/]
+                          '/php/',
+                          '/browsedisk',
+                          '/mambo/',
+                          '/includes/',
+                          /\/old\/?\z/,
+                          /\/\.env\z/,
+                          /\A\/old-wp/,
+                          /\A\/wordpress/]
     
     DEFAULT_EVIL_QUERIES = [/SELECT.+FROM.+/i,
                             /SELECT.+COUNT/i,
@@ -19,7 +26,10 @@ module Rack
                             '--%20',
                             '-- ',
                             '%2Fscript%3E',
-                            '<script>']
+                            '<script>', '</script>',
+                            '<php>', '</php>',
+                            'XDEBUG_SESSION_START',
+                            'phpstorm']
 
     class << self
 
