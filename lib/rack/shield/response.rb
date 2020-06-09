@@ -28,8 +28,14 @@ module Rack
       end
       
       def render
-        html = self.class.template.read.gsub('%REQUEST_IP%', env['REMOTE_ADDR'].to_s)
+        html = self.class.template.read.gsub('%REQUEST_IP%', request_ip.to_s)
         [403, { 'Content-Type' => 'text/html' }, ["#{html}\n"]]
+      end
+      
+      private
+      
+      def request_ip
+        env['HTTP_X_REAL_IP'] || env['REMOTE_ADDR']
       end
     end
   end
