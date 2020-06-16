@@ -6,9 +6,11 @@ require_relative 'shield/response'
 module Rack
   module Shield
     DEFAULT_EVIL_PATHS = [/\/wp-(includes|content|admin)/,
-                          /\.(php|cgi|asp|aspx|shtml|log|sql|sql\.gz|cfm|py|lasso|pl|jsp|do|action|sh)\z/i,
+                          /\.(php|cgi|asp|aspx|shtml|log|sql|(my)?sql\.gz|cfm|py|lasso|pl|jsp|do|action|sh)\z/i,
                           'cgi-bin',
                           'phpmyadmin',
+                          'sqlbuddy',
+                          /(my)?sql-backup/,
                           'etc/passwd',
                           '/php/',
                           '/browsedisk',
