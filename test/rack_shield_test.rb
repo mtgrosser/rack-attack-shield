@@ -12,4 +12,10 @@ class RackShieldTest < Minitest::Test
   def test_cgi_ext_is_blocked
     assert Rack::Shield.evil?(TestRequest.new('/foo/bar.cgi'))
   end
+  
+  def test_head_returns_empty_body
+    status, _, body = Rack::Shield::Response.new({'REQUEST_METHOD' => 'HEAD', 'REQUEST_URI' => '/site.html'}).render
+    assert_equal 403, status
+    assert_empty body
+  end
 end
