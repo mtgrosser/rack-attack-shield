@@ -6,7 +6,7 @@ require_relative 'shield/response'
 module Rack
   module Shield
     DEFAULT_EVIL_PATHS = [/\/wp-(includes|content|admin)/,
-                          /\.(php|cgi|asp|aspx|shtml|log|sql|(my)?sql\.(tar\.|t)?gz|cfm|py|lasso|pl|jsp|do|action|sh)\z/i,
+                          /\.(php|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?gz)?|cfm|py|lasso|e?rb|pl|jsp|do|action|sh)\z/i,
                           'cgi-bin',
                           'phpmyadmin',
                           'sqlbuddy',
@@ -24,6 +24,7 @@ module Rack
     DEFAULT_EVIL_QUERIES = [/SELECT.+FROM.+/i,
                             /SELECT.+COUNT/i,
                             /SELECT.+UNION/i,
+                            /UNION.+SELECT/i,
                             /INFORMATION_SCHEMA/i,
                             '--%20',
                             '-- ',
@@ -38,8 +39,8 @@ module Rack
       attr_accessor :evil_paths, :evil_queries, :response
   
       def evil?(req)
-        evil_paths.any? { |matcher| match?(req.path, matcher) } || 
-          evil_queries.any? { |matcher| match?(req.query_string, matcher) }
+        (req.path && evil_paths.any? { |matcher| match?(req.path, matcher) }) || 
+        (req.query_string && evil_queries.any? { |matcher| match?(req.query_string, matcher) })
       end
       
       def template
