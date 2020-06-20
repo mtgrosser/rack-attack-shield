@@ -15,8 +15,14 @@ class RackShieldTest < Minitest::Test
       '/foo.sql',
       '/foo.mysql',
       '/../../etc/passwd',
-      '/phpmyadmin'
+      '/phpmyadmin',
+      '/foo.mysql.zip',
+      '/foo.sql.zip'
     ].each { |path| assert_blocked path }
+  end
+  
+  test 'ZIP files are not blocked' do
+    assert_not_blocked '/foo.bar.zip'
   end
   
   test 'SQL injection is blocked' do
@@ -36,5 +42,12 @@ class RackShieldTest < Minitest::Test
     message << "with query #{query.inspect} " if query
     message << "to be blocked, but wasn't"
     assert Rack::Shield.evil?(TestRequest.new(path, query)), message
+  end
+  
+  def assert_not_blocked(path, query = nil)
+    message = "Expected #{path.inspect} "
+    message << "with query #{query.inspect} " if query
+    message << "not to be blocked, but was"
+    assert !Rack::Shield.evil?(TestRequest.new(path, query)), message
   end
 end
