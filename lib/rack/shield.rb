@@ -16,6 +16,7 @@ module Rack
                           '/browsedisk',
                           '/mambo/',
                           '/includes/',
+                          /\/\.(hg|git|svn|bzr|htaccess)/,
                           /\/old\/?\z/,
                           /\/\.env\z/,
                           /\A\/old-wp/,

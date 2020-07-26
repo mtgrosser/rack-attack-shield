@@ -21,6 +21,12 @@ class RackShieldTest < Minitest::Test
     ].each { |path| assert_blocked path }
   end
   
+  test 'Repositories are blocked' do
+    assert_blocked '/foobar/.git'
+    assert_blocked '/.hg/hgrc'
+    assert_blocked '/foo/.svn/format'
+  end
+  
   test 'ZIP files are not blocked' do
     assert_not_blocked '/foo.bar.zip'
   end
