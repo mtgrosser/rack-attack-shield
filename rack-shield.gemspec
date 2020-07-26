@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Block and unblock evil requests'
   spec.description   = 'Plugin for rack-attack to block and unblock evil requests'
   spec.homepage      = 'https://github.com/mtgrosser/rack-shield'
+  spec.licenses      = ['MIT']
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
