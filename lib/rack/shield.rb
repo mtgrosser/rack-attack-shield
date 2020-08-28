@@ -9,18 +9,20 @@ module Rack
                           /\.(php|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|py|lasso|e?rb|pl|jsp|do|action|sh)\z/i,
                           'cgi-bin',
                           'phpmyadmin',
+                          '/pma/',
                           'sqlbuddy',
                           /(my)?sql-backup/,
                           'etc/passwd',
                           '/php/',
                           '/browsedisk',
                           '/mambo/',
+                          '/phpunit/',
                           '/includes/',
                           /\/\.(hg|git|svn|bzr|htaccess)/,
                           /\/old\/?\z/,
                           /\/\.env\z/,
                           /\A\/old-wp/,
-                          /\A\/wordpress/]
+                          /\A\/(wordpress|wp)\//]
     
     DEFAULT_EVIL_QUERIES = [/SELECT.+FROM.+/i,
                             /SELECT.+COUNT/i,
