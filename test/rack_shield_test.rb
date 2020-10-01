@@ -32,7 +32,7 @@ class RackShieldTest < Minitest::Test
   end
   
   test 'SQL injection is blocked' do
-    assert_blocked '/posts/new', 'author_id=95%27%20UNION%20ALL%20SELECT%20NULL%2CNULL%2CNULL--%20HDgn'
+    assert_blocked '/posts/new', query_string: 'author_id=95%27%20UNION%20ALL%20SELECT%20NULL%2CNULL%2CNULL--%20HDgn'
   end
   
   test 'HEAD returns empty body' do
@@ -41,19 +41,31 @@ class RackShieldTest < Minitest::Test
     assert_empty body
   end
   
-  private
-  
-  def assert_blocked(path, query = nil)
-    message = "Expected #{path.inspect} "
-    message << "with query #{query.inspect} " if query
-    message << "to be blocked, but wasn't"
-    assert Rack::Shield.evil?(TestRequest.new(path, query)), message
+  test 'Custom proc matchers' do
+    checks = Rack::Shield.checks.dup
+    begin
+      Rack::Shield.checks << ->(req) { req.post? && req.content_type && req.content_type.include?('FOOBARFOO') }
+      assert_blocked '/posts/create', content_type: 'multipart/form-data; boundary=------------------------FOOBARFOO', method: :post
+    ensure
+      Rack::Shield.checks.replace checks
+    end
   end
   
-  def assert_not_blocked(path, query = nil)
+  private
+  
+  def assert_blocked(path, **opts)
     message = "Expected #{path.inspect} "
-    message << "with query #{query.inspect} " if query
+    message << "with query #{opts[:query_string].inspect} " if opts[:query_string]
+    message << "and method #{opts[:method].to_s.upcase} " if opts[:method]
+    message << "to be blocked, but wasn't"
+    assert Rack::Shield.evil?(TestRequest.new(path, **opts)), message
+  end
+  
+  def assert_not_blocked(path, **opts)
+    message = "Expected #{path.inspect} "
+    message << "with query #{opts[:query_string].inspect} " if opts[:query_string]
+    message << "and method #{opts[:method].to_s.upcase} " if opts[:method]
     message << "not to be blocked, but was"
-    assert !Rack::Shield.evil?(TestRequest.new(path, query)), message
+    assert !Rack::Shield.evil?(TestRequest.new(path, **opts)), message
   end
 end

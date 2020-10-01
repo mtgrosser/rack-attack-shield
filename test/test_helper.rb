@@ -4,6 +4,7 @@ require 'bundler/setup'
 Bundler.require(:default)
 
 require 'minitest/autorun'
+require 'byebug'
 
 module Minitest
   module Declarative
@@ -25,9 +26,13 @@ end
 Minitest::Test.extend Minitest::Declarative
 
 class TestRequest
-  attr_reader :path, :query_string
+  attr_reader :path, :query_string, :content_type, :method
   
-  def initialize(path, query_string = nil)
-    @path, @query_string = path, query_string
+  def initialize(path, query_string: nil, content_type: nil, method: :get)
+    @path, @query_string, @content_type, @method = path, query_string, content_type, method
+  end
+  
+  %i[get post patch delete].each do |http_method|
+    define_method("#{http_method}?") { method == http_method }
   end
 end
