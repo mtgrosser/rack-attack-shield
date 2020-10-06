@@ -20,6 +20,13 @@ class RackShieldTest < Minitest::Test
       '/foo.sql.zip'
     ].each { |path| assert_blocked path }
   end
+
+  test 'Wordpress is blocked with and without trailing slash' do
+    assert_blocked '/wordpress'
+    assert_blocked '/wp'
+    assert_blocked '/wordpress/'
+    assert_blocked '/wp/'
+  end
   
   test 'Repositories are blocked' do
     assert_blocked '/foobar/.git'

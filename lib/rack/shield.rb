@@ -17,7 +17,6 @@ module Rack
                     '/browsedisk',
                     '/mambo/',
                     '/varien/js.js',
-                    '/js/mage/adminhtml',
                     'RELEASE_NOTES.txt',
                     '/phpunit/',
                     '/mage/',
@@ -26,12 +25,14 @@ module Rack
                     '/includes/',
                     '/HNAP1',
                     '/nmaplowercheck',
+                    '/solr/admin/',
+                    '/axis2/axis2-admin',
                     '/RELEASE_NOTES.txt',
                     /\/\.(hg|git|svn|bzr|htaccess)/,
                     /\/old\/?\z/,
                     /\/\.env\z/,
                     /\A\/old-wp/,
-                    /\A\/(wordpress|wp)\//]
+                    /\A\/(wordpress|wp)(\/|\z)/]
     
     DEFAULT_QUERIES = [/SELECT.+FROM.+/i,
                        /SELECT.+COUNT/i,
@@ -71,10 +72,10 @@ module Rack
       end
     end
 
-    self.paths   = DEFAULT_PATHS.dup
-    self.queries = DEFAULT_QUERIES.dup
-    self.checks  = []
-    self.response     = Response
+    self.paths     = DEFAULT_PATHS.dup
+    self.queries   = DEFAULT_QUERIES.dup
+    self.checks    = []
+    self.response  = Response
     
   end
 end
