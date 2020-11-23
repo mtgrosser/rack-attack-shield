@@ -42,6 +42,10 @@ class RackShieldTest < Minitest::Test
     assert_blocked '/posts/new', query_string: 'author_id=95%27%20UNION%20ALL%20SELECT%20NULL%2CNULL%2CNULL--%20HDgn'
   end
   
+  test 'Path starting with quote is blocked' do
+    assert_blocked '/"foobar.html'
+  end
+  
   test 'HEAD returns empty body' do
     status, _, body = Rack::Shield::Response.new({'REQUEST_METHOD' => 'HEAD', 'REQUEST_URI' => '/site.html'}).render
     assert_equal 403, status
