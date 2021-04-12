@@ -5,7 +5,7 @@ require_relative 'shield/response'
 
 module Rack
   module Shield
-    DEFAULT_PATHS = [/\/wp-(includes|content|admin)/,
+    DEFAULT_PATHS = [/\/wp-(includes|content|admin|json)/,
                      /\.(php|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|py|lasso|e?rb|pl|jsp|do|action|sh)\z/i,
                     'cgi-bin',
                     'phpmyadmin',
@@ -16,8 +16,10 @@ module Rack
                     '/php/',
                     '/browsedisk',
                     '/mambo/',
+                    '/jenkins/',
                     '/joomla/',
                     '/varien/js.js',
+                    '/drupal.js',
                     'RELEASE_NOTES.txt',
                     '/phpunit/',
                     '/mage/',
@@ -31,6 +33,8 @@ module Rack
                     '/RELEASE_NOTES.txt',
                     'deployment-config.json',
                     'ftpsync.settings',
+                    '/_profiler/latest',
+                    '/_ignition/execute-solution',
                     /\A\/"/,
                     /\/\.(hg|git|svn|bzr|htaccess|ftpconfig|vscode|remote-sync)/,
                     /\/old\/?\z/,
@@ -49,7 +53,9 @@ module Rack
                        '<script>', '</script>',
                        '<php>', '</php>',
                        'XDEBUG_SESSION_START',
-                       'phpstorm']
+                       'phpstorm',
+                       'onload=confirm',
+                     ]
 
     class << self
 
