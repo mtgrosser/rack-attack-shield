@@ -5,7 +5,7 @@ require_relative 'shield/response'
 
 module Rack
   module Shield
-    DEFAULT_PATHS = [/\/wp-(includes|content|admin|json)/,
+    DEFAULT_PATHS = [/\/wp-(includes|content|admin|json|config)/,
                      /\.(php|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|py|lasso|e?rb|pl|jsp|do|action|sh)\z/i,
                     'cgi-bin',
                     'phpmyadmin',
@@ -35,6 +35,7 @@ module Rack
                     'ftpsync.settings',
                     '/_profiler/latest',
                     '/_ignition/execute-solution',
+                    '/_wpeprivate/',
                     /\A\/"/,
                     /\/\.(hg|git|svn|bzr|htaccess|ftpconfig|vscode|remote-sync)/,
                     /\/old\/?\z/,
