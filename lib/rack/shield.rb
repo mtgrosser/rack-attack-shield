@@ -38,6 +38,7 @@ module Rack
                     '/_profiler/latest',
                     '/_ignition/execute-solution',
                     '/_wpeprivate/',
+                    '/Config/SaveUploadedHotspotLogoFile',
                     'ALFA_DATA',
                     'cgialfa',
                     'alfacgiapi',
