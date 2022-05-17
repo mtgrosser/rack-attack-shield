@@ -92,6 +92,6 @@ module Rack
     self.queries   = DEFAULT_QUERIES.dup
     self.checks    = []
     self.response  = Response
-    
+
   end
 end

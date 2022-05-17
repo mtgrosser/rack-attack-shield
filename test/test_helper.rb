@@ -4,7 +4,7 @@ require 'bundler/setup'
 Bundler.require(:default)
 
 require 'minitest/autorun'
-require 'byebug'
+require 'debug'
 
 module Minitest
   module Declarative

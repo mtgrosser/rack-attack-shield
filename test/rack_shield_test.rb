@@ -51,12 +51,22 @@ class RackShieldTest < Minitest::Test
     assert_equal 403, status
     assert_empty body
   end
-  
+
   test 'Custom proc matchers' do
     checks = Rack::Shield.checks.dup
     begin
       Rack::Shield.checks << ->(req) { req.post? && req.content_type && req.content_type.include?('FOOBARFOO') }
       assert_blocked '/posts/create', content_type: 'multipart/form-data; boundary=------------------------FOOBARFOO', method: :post
+    ensure
+      Rack::Shield.checks.replace checks
+    end
+  end
+
+  test 'Custom checks' do
+    begin
+      checks = Rack::Shield.checks.dup
+      Rack::Shield.checks << lambda { |req| req.content_type.include?('foop') }
+      assert_blocked '/', content_type: 'application/foop'
     ensure
       Rack::Shield.checks.replace checks
     end
