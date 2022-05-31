@@ -47,7 +47,7 @@ class RackShieldTest < Minitest::Test
   end
   
   test 'HEAD returns empty body' do
-    status, _, body = Rack::Shield::Response.new({'REQUEST_METHOD' => 'HEAD', 'REQUEST_URI' => '/site.html'}).render
+    status, _, body = Rack::Shield::Responder.new(TestRequest.new('/site.html', method: :head)).render
     assert_equal 403, status
     assert_empty body
   end

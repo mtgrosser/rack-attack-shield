@@ -1,7 +1,7 @@
 module Rack
   module Shield
-    class Response
-      attr_reader :env
+    class Responder
+      attr_reader :request
       
       class << self
         attr_writer :template
@@ -18,13 +18,17 @@ module Rack
           Pathname.new(__FILE__).dirname.join('..', '..', '..', '..', 'templates', 'shield.html')
         end
         
-        def call(env)
-          new(env).render
+        def call(request)
+          new(request).render
         end
       end
       
-      def initialize(env)
-        @env = env
+      def initialize(request)
+        @request = request
+      end
+      
+      def env
+        request.env
       end
       
       def render
@@ -39,12 +43,8 @@ module Rack
         env['HTTP_X_REAL_IP'] || env['REMOTE_ADDR']
       end
       
-      def request_method
-        env['REQUEST_METHOD']
-      end
-      
       def head?
-        'HEAD' == request_method
+        request.head?
       end
     end
   end

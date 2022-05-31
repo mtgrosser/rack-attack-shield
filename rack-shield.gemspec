@@ -17,5 +17,5 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rack-attack'
+  spec.add_dependency 'rack-attack', '>= 6.6.0'
 end

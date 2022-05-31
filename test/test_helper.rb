@@ -30,9 +30,14 @@ class TestRequest
   
   def initialize(path, query_string: nil, content_type: nil, method: :get)
     @path, @query_string, @content_type, @method = path, query_string, content_type, method
+    @env = { 'REQUEST_METHOD' => method.to_s.upcase, 'REQUEST_URI' => path }
   end
   
-  %i[get post patch delete].each do |http_method|
+  def env
+    @env
+  end
+  
+  %i[head get post patch delete].each do |http_method|
     define_method("#{http_method}?") { method == http_method }
   end
 end
