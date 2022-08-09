@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-shield (1.0.1)
+    rack-shield (1.0.2)
       rack-attack (>= 6.6.0)
 
 GEM
