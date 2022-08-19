@@ -2,6 +2,7 @@ require 'pathname'
 require 'rack/attack'
 require_relative 'shield/version'
 require_relative 'shield/responder'
+require_relative 'shield/request_ext'
 
 module Rack
   module Shield

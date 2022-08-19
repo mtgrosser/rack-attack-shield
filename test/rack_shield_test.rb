@@ -61,6 +61,19 @@ class RackShieldTest < Minitest::Test
       Rack::Shield.checks.replace checks
     end
   end
+  
+  test 'Post body checks' do
+    checks = Rack::Shield.checks.dup
+    begin
+      Rack::Shield.checks << lambda do |req|
+        req.post? && req.content_type && req.content_type.include?('application/json') && req.raw_post_data && req.raw_post_data.start_with?('foo=true')
+      end
+      assert_blocked '/signup', content_type: 'application/json;', method: :post, body: 'foo=true'
+      assert_not_blocked '/signup', content_type: 'application/json;', method: :post, body: '{"foo":true}'
+    ensure
+      Rack::Shield.checks.replace checks
+    end
+  end
 
   test 'Custom checks' do
     begin

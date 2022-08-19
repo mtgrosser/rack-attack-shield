@@ -26,11 +26,14 @@ end
 Minitest::Test.extend Minitest::Declarative
 
 class TestRequest
+  include Rack::Shield::RequestExt
+  
   attr_reader :path, :query_string, :content_type, :method
   
-  def initialize(path, query_string: nil, content_type: nil, method: :get)
+  def initialize(path, query_string: nil, content_type: nil, method: :get, body: nil)
     @path, @query_string, @content_type, @method = path, query_string, content_type, method
     @env = { 'REQUEST_METHOD' => method.to_s.upcase, 'REQUEST_URI' => path }
+    @env['RAW_POST_DATA'] = body if body && %i[post patch].include?(method)
   end
   
   def env
