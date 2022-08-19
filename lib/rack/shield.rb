@@ -1,4 +1,5 @@
 require 'pathname'
+require 'stringio'
 require 'rack/attack'
 require_relative 'shield/version'
 require_relative 'shield/responder'
