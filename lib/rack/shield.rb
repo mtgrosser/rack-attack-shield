@@ -76,17 +76,16 @@ module Rack
                        '<php>',
                        'onload=confirm',
                        'HelloThinkCMF',
-                       'XDEBUG_SESSION_START',
-                     ]
-
+                       'XDEBUG_SESSION_START']
+    
+    DEFAULT_BODIES = []
+    
     class << self
 
-      attr_accessor :paths, :queries, :checks, :responder
+      attr_accessor :paths, :queries, :bodies, :checks, :responder
   
       def evil?(req)
-        (req.path && paths.any? { |matcher| match?(req.path, matcher) }) ||
-        (req.query_string && queries.any? { |matcher| match?(req.query_string, matcher) }) ||
-        (checks.any? { |matcher| match?(req, matcher) })
+        evil_paths?(req) || evil_queries?(req) || evil_checks?(req) || evil_bodies?(req)
       end
       
       def template
@@ -102,10 +101,30 @@ module Rack
         when Proc   then matcher.call(obj)
         end
       end
+      
+      def evil_paths?(req)
+        req.path && paths.any? { |matcher| match?(req.path, matcher) }
+      end
+      
+      def evil_queries?(req)
+        req.query_string && queries.any? { |matcher| match?(req.query_string, matcher) }
+      end
+      
+      def evil_checks?(req)
+        checks.any? { |matcher| match?(req, matcher) }
+      end
+      
+      def evil_bodies?(req)
+        return false unless req.post? || req.put? || req.patch?
+        return false unless body = req.raw_post_data
+        return false if body.empty?
+        bodies.any? { |matcher| match?(body, matcher) }
+      end
     end
 
     self.paths     = DEFAULT_PATHS.dup
     self.queries   = DEFAULT_QUERIES.dup
+    self.bodies    = DEFAULT_BODIES.dup
     self.checks    = []
     self.responder = Responder
 

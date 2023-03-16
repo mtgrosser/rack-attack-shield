@@ -62,7 +62,7 @@ class RackShieldTest < Minitest::Test
     end
   end
   
-  test 'Post body checks' do
+  test 'Custom POST body checks' do
     checks = Rack::Shield.checks.dup
     begin
       Rack::Shield.checks << lambda do |req|
@@ -72,6 +72,16 @@ class RackShieldTest < Minitest::Test
       assert_not_blocked '/signup', content_type: 'application/json;', method: :post, body: '{"foo":true}'
     ensure
       Rack::Shield.checks.replace checks
+    end
+  end
+  
+  test 'Body checks' do
+    bodies = Rack::Shield.bodies.dup
+    begin
+      Rack::Shield.bodies << /INFORMATION_SCHEMA/i
+      assert_blocked '/signup', content_type: 'application/json', method: :put, body: 'SELECT * FROM INFORMATION_SCHEMA'
+    ensure
+      Rack::Shield.bodies.replace bodies
     end
   end
 
