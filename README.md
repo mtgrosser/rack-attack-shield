@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/rack-shield.svg)](http://badge.fury.io/rb/rack-shield) [![build](https://github.com/mtgrosser/rack-shield/actions/workflows/build.yml/badge.svg)](https://github.com/mtgrosser/rack-shield/actions/workflows/build.yml)
+
 ![Shield](https://raw.githubusercontent.com/mtgrosser/rack-shield/master/doc/shield.svg)
 
 # Rack::Shield
