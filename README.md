@@ -37,10 +37,10 @@ Adding to path matchers:
 
 ```ruby
 # Regexp will be matched
-Rack::Shield.evil_paths << /\.sql\z/
+Rack::Shield.paths << /\.sql\z/
 
 # String will be checked for inclusion
-Rack::Shield.evil_paths << '/wp-admin'
+Rack::Shield.paths << '/wp-admin'
 ```
 Defaults are defined in `Rack::Shield::DEFAULT_EVIL_PATHS`.
 
