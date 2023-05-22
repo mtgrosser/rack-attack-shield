@@ -8,7 +8,7 @@ require_relative 'shield/request_ext'
 module Rack
   module Shield
     DEFAULT_PATHS = [/\/wp-(includes|content|admin|json|config)/,
-                     /\.(php|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|py|lasso|e?rb|pl|jsp|do|action|sh|dll)\z/i,
+                     /\.(php\d?|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|cmd|py|lasso|e?rb|pl|jsp|do|action|sh|dll|lsp)\z/i,
                     'cgi-bin',
                     'phpmyadmin',
                     '/pma/',
@@ -54,12 +54,22 @@ module Rack
                     '/aspnet-ajax/',
                     '/Portal.mwsl',
                     '/adminer',
+                    '/appsuite/signin',
+                    '/io.ox/',
+                    '/tkset/',
+                    '/bakula-web',
+                    '/snort/',
+                    '/officescan/',
+                    '/servlet/',
+                    '/ox6/',
+                    '/ws_utc/',
                     /\A\/"/,
                     /\/\.(hg|git|svn|bzr|htaccess|ftpconfig|vscode|remote-sync|aws|env|DS_Store)/,
                     /\/old\/?\z/,
                     /\/\.env\z/,
                     /\A\/old-wp/,
-                    /\A\/(wordpress|wp)(\/|\z)/]
+                    /\A\/(wordpress|wp)(\/|\z)/,
+                    /Open-Xchange/i]
     
     DEFAULT_QUERIES = [/SELECT.+FROM.+/i,
                        /SELECT.+COUNT/i,
