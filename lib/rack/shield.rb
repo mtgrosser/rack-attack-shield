@@ -20,6 +20,7 @@ module Rack
                     '.php/',
                     '/browsedisk',
                     '/mambo/',
+                    '/ipython/',
                     '/jenkins/',
                     '/joomla/',
                     '/varien/js.js',
@@ -63,6 +64,14 @@ module Rack
                     '/servlet/',
                     '/ox6/',
                     '/ws_utc/',
+                    '/OASREST/',
+                    '/WEB-INF/',
+                    '/faspex/',
+                    '/(download)/',
+                    '/nacos/',
+                    '/UploadServlet',
+                    '/meta-data/identity-credentials/',
+                    '/SDK/webLanguage',
                     /\A\/"/,
                     /\/\.(hg|git|svn|bzr|htaccess|ftpconfig|vscode|remote-sync|aws|env|DS_Store)/,
                     /\/old\/?\z/,
@@ -88,7 +97,7 @@ module Rack
                        'HelloThinkCMF',
                        'XDEBUG_SESSION_START']
     
-    DEFAULT_BODIES = []
+    DEFAULT_BODIES = ['OKMLlKlV']
     
     class << self
 
