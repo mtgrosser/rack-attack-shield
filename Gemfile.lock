@@ -29,6 +29,3 @@ DEPENDENCIES
   minitest
   rack-shield!
   rake
-
-BUNDLED WITH
-   2.5.9
