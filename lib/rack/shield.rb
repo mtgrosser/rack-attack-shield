@@ -8,7 +8,7 @@ require_relative 'shield/request_ext'
 module Rack
   module Shield
     DEFAULT_PATHS = [/\/wp-(includes|content|admin|json|config)/,
-                     /\.(php\d?|cgi|asp|aspx|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|cmd|py|lasso|e?rb|pl|jsp|do|action|sh|dll|lsp)\z/i,
+                     /\.(php\d?|cgi|asp|aspx|env|shtml|log|(my)?sql(\.tar)?(\.t?(gz|zip))?|cfm|cmd|py|lasso|e?rb|pl|jsp|do|action|sh|dll|lsp|ehp)\z/i,
                     'cgi-bin',
                     'phpmyadmin',
                     '/pma/',
@@ -72,10 +72,25 @@ module Rack
                     '/UploadServlet',
                     '/meta-data/identity-credentials/',
                     '/SDK/webLanguage',
+                    '/seeyon/htmlofficeservlet',
+                    '/jmx-console',
+                    '/nginx.conf',
+                    '/WEB-INF/',
+                    '/VisionHubWebApi/',
+                    '/groovyconsole',
+                    '/SaveUploadedHotspotLogoFile',
+                    '/downloadMainLog',
+                    '/aspera/faspex',
+                    '/actuator/health',
+                    '/SiteLoader',
+                    '/mPlayer',
+                    '/Portal0000.htm',
+                    '/rest/applinks/',
+                    '/nice%20ports',
+                    '/remote/logincheck',
                     /\A\/"/,
                     /\/\.(hg|git|svn|bzr|htaccess|ftpconfig|vscode|remote-sync|aws|env|DS_Store)/,
                     /\/old\/?\z/,
-                    /\/\.env\z/,
                     /\A\/old-wp/,
                     /\A\/(wordpress|wp)(\/|\z)/,
                     /Open-Xchange/i]
@@ -97,7 +112,12 @@ module Rack
                        'HelloThinkCMF',
                        'XDEBUG_SESSION_START']
     
-    DEFAULT_BODIES = ['OKMLlKlV']
+    DEFAULT_BODIES = ['OKMLlKlV',
+                      'DBMS_PIPE.RECEIVE_MESSAGE',
+                      /WAITFOR DELAY/i,
+                      /FROM PG_SLEEP/i,
+                      /CHR\(\d+\)/i,
+                      /UNION.+SELECT/i]
     
     class << self
 

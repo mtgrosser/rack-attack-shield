@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-shield (1.2.2)
+    rack-shield (1.2.3)
       rack-attack (>= 6.6.0)
 
 GEM
@@ -13,7 +13,7 @@ GEM
     io-console (0.5.11)
     irb (1.4.1)
       reline (>= 0.3.0)
-    minitest (5.15.0)
+    minitest (5.24.1)
     rack (3.0.8)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
@@ -31,4 +31,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   2.1.4
+   2.5.9
