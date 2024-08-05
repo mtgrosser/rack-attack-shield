@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-shield (1.2.3)
+    rack-shield (1.2.4)
       rack-attack (>= 6.6.0)
 
 GEM
@@ -29,3 +29,6 @@ DEPENDENCIES
   minitest
   rack-shield!
   rake
+
+BUNDLED WITH
+   2.5.9
